@@ -29,6 +29,18 @@ describe '#artist' do
     end
   end
 
+  describe '#get_top_fans' do
+    it 'should get top fans' do
+      @lastfm.should_receive(:request).with('artist.getTopFans', {
+        :artist => 'Cher'
+      }).and_return(make_response('artist_get_top_fans'))
+
+      top_fans = @lastfm.artist.get_top_fans(:artist => 'Cher')
+      top_fans.should have(50).items
+      top_fans.first['name'].should eql('D3xperience')
+    end
+  end
+
   describe '#get_info' do
     it 'should get info' do
       @lastfm.should_receive(:request).with('artist.getInfo', {

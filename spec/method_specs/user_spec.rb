@@ -210,6 +210,17 @@ describe '#user' do
       tracks[1]['artist']['content'].should == 'Kylie Minogue'
       tracks.size.should == 2
     end
+    
+    it 'should not error when a user\'s recent tracks includes malformed data' do
+      @lastfm.should_receive(:request).with('user.getRecentTracks', {
+        :user => 'test',
+        :page => nil,
+        :limit => nil,
+        :to => nil,
+        :from => nil
+      }).and_return(make_response('user_get_recent_tracks_malformed'))
+      tracks = @lastfm.user.get_recent_tracks(:user => 'test')
+    end
   end
 
   describe '#get_top_tags' do
@@ -285,6 +296,17 @@ describe '#user' do
       weekly_tracks[0]['playcount'].should == "2"
       weekly_tracks[1]['playcount'].should == "2"
       weekly_tracks.size.should == 3
+    end
+  end
+
+  describe '#get_recommended_events' do
+    it 'should get a user\'s list of recommended events' do
+      @lastfm.should_receive(:request).with('user.getRecommendedEvents', {}, :get, true, true) {
+        make_response('user_get_recommended_events') }
+
+      recommended_events = @lastfm.user.get_recommended_events
+      recommended_events[0]['artists']['headliner'].should == 'Toro y Moi'
+      recommended_events[1]['artists']['headliner'].should == 'Reel Big Fish'
     end
   end
 end

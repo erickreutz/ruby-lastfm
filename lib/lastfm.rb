@@ -5,6 +5,8 @@ require 'active_support/core_ext/string/inflections'
 
 require 'lastfm/util'
 require 'lastfm/response'
+require 'lastfm/http_request.rb'
+require 'lastfm/https_request.rb'
 require 'lastfm/method_category/base'
 require 'lastfm/method_category/album'
 require 'lastfm/method_category/artist'
@@ -16,13 +18,10 @@ require 'lastfm/method_category/tag'
 require 'lastfm/method_category/tasteometer'
 require 'lastfm/method_category/track'
 require 'lastfm/method_category/user'
+require 'lastfm/method_category/chart'
+require 'lastfm/method_category/radio'
 
 class Lastfm
-  API_ROOT = 'http://ws.audioscrobbler.com/2.0'
-
-  include HTTParty
-  base_uri API_ROOT
-
   attr_accessor :session
 
   class Error < StandardError; end
@@ -80,7 +79,15 @@ class Lastfm
     MethodCategory::User.new(self)
   end
 
-  def request(method, params = {}, http_method = :get, with_signature = false, with_session = false)
+  def chart
+    MethodCategory::Chart.new(self)
+  end
+
+  def radio
+    MethodCategory::Radio.new(self)
+  end
+
+  def request(method, params = {}, http_method = :get, with_signature = false, with_session = false, use_https = false)
     params[:method] = method
     params[:api_key] = @api_key
 
@@ -96,7 +103,15 @@ class Lastfm
     params.update(:sk => @session) if with_session
     params.update(:api_sig => Digest::MD5.hexdigest(build_method_signature(params))) if with_signature
 
-    response = Response.new(self.class.send(http_method, '/', (http_method == :post ? :body : :query) => params).body)
+    request_args = [http_method, '/', { (http_method == :post ? :body : :query) => params }]
+
+    response = if use_https
+      HTTPSRequest.send(*request_args)
+    else
+      HTTPRequest.send(*request_args)
+    end
+
+    response = Response.new(response.body)
     unless response.success?
       raise ApiError.new(response.message, response.error)
     end

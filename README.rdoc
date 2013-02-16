@@ -35,6 +35,7 @@ It supports methods which require {authentication}[http://www.last.fm/api/authen
 * {artist.getSimilar}[http://www.last.fm/api/show?service=267]
 * {artist.getTags}[http://www.last.fm/api/show?service=267]
 * {artist.getTopAlbums}[http://www.last.fm/api/show/artist.getTopAlbums]
+* {artist.getTopFans}[http://www.last.fm/api/show/artist.getTopFans]
 * {artist.getTopTracks}[http://www.last.fm/api/show/artist.getTopTracks]
 * {artist.search}[http://www.lastfm.jp/api/show/artist.search]
 
@@ -47,6 +48,10 @@ It supports methods which require {authentication}[http://www.last.fm/api/authen
 === Event
 
 * {event.getInfo}[http://www.lastfm.jp/api/show/event.getInfo]
+
+=== Radio
+
+* {radio.getPlaylist}[http://www.lastfm.jp/api/show/radio.getPlaylist]
 
 === Tag
 
@@ -82,6 +87,7 @@ It supports methods which require {authentication}[http://www.last.fm/api/authen
 * {user.getNeighbours}[http://www.lastfm.jp/api/show?service=264]
 * {user.getPersonalTags}[http://www.lastfm.jp/api/show/user.getPersonalTags]
 * {user.getRecentTracks}[http://www.lastfm.jp/api/show?service=278]
+* {user.getRecommendedEvents}[http://www.last.fm/api/show/user.getRecommendedEvents]
 * {user.getTopArtists}[http://www.lastfm.jp/api/show/user.getTopArtists]
 * {user.getTopAlbums}[http://www.lastfm.jp/api/show/user.getTopAlbums]
 * {user.getTopTags}[http://www.lastfm.jp/api/show/user.getTopTags]
@@ -99,6 +105,10 @@ It supports methods which require {authentication}[http://www.last.fm/api/authen
 
 * {library.getArtists}[http://www.lastfm.jp/api/show?service=322]
 * {library.getTracks}[http://www.last.fm/api/show/library.getTracks]
+
+=== Chart
+
+* {chart.getHypedArtists}[http://www.lastfm.jp/api/show/chart.getHypedArtists]
 
 == Installation
 
